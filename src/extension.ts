@@ -19,17 +19,22 @@ function startBash() {
     // Launch bash in the root path of the workspace 
     // http://stackoverflow.com/questions/36587904/how-to-start-bash-in-a-directory-in-windows-bat
     // git-bash.exe" --cd=D:\mozdev
+    const message = 'Failed to start bash - is git-bash.exe on the system path?';
     try {
         const rootPath = workspace.rootPath;
         if( !rootPath || rootPath.length==0 ) return;
         
         const pathArg = "--cd=" + rootPath;
-        spawn('git-bash.exe',[pathArg]);
+        const gitProcess = spawn('git-bash.exe',[pathArg]);
+        gitProcess.on('error', function(error) {
+            console.error(message + error);
+            vscode.window.showErrorMessage(message);
+        });
         
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Bash started @ "' + rootPath + '"');
+        // Log a message that we succeeded in opening a bash window
+        console.log('Bash started @ "' + rootPath + '"');
     } catch( e ) {
-        vscode.window.showErrorMessage('Failed to start bash - is git-bash.exe on the path?');
+        vscode.window.showErrorMessage(message);
     }//catch
 }
 
