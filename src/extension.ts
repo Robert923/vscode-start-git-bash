@@ -6,35 +6,41 @@ var spawn = require('child_process').spawn;
  * Start bash in the current VSCode workspace root folder
  */ 
 function startBash() {
-    // If spawn wasn't successfully loaded there's nothing we can do
-    if( !spawn ) {
-        vscode.window.showErrorMessage('Could not start bash - no spawn function found (sorry).');
-        return;
-    }
-
-    // Get the current workspace
-    const workspace = vscode.workspace;
-    if( !workspace ) return;     // If there's no open work space there's nothing we can do
-
-    // Launch bash in the root path of the workspace 
-    // http://stackoverflow.com/questions/36587904/how-to-start-bash-in-a-directory-in-windows-bat
-    // git-bash.exe" --cd=D:\mozdev
-    const message = 'Failed to start bash - is git-bash.exe on the system path?';
     try {
+        // If spawn wasn't successfully loaded there's nothing we can do
+        if( !spawn ) {
+            vscode.window.showErrorMessage('Could not start bash - no spawn function found (sorry).');
+            return;
+        }
+
+        // Get the current workspace
+        const workspace = vscode.workspace;
+        if( !workspace ) return;     // If there's no open work space there's nothing we can do
+
+        // Launch bash in the root path of the workspace 
+        // http://stackoverflow.com/questions/36587904/how-to-start-bash-in-a-directory-in-windows-bat
+        // git-bash.exe" --cd=D:\mozdev
         const rootPath = workspace.rootPath;
-        if( !rootPath || rootPath.length==0 ) return;
+        if( !rootPath || rootPath.length==0 ) {
+            vscode.window.showWarningMessage('No folder is open in VSCode, so unsure where to start git-bash.');
+            return;     // If there's no open work space there's nothing we can do
+        }
         
+        // Try and spawn a git-bash.exe process
         const pathArg = "--cd=" + rootPath;
         const gitProcess = spawn('git-bash.exe',[pathArg]);
         gitProcess.on('error', function(error) {
-            console.error(message + error);
-            vscode.window.showErrorMessage(message);
+            const missingGitBash = 'Failed to start bash - is git-bash.exe on the system path?';
+            console.error(missingGitBash + '   Underlying spawn error: ' + error);
+            vscode.window.showErrorMessage(missingGitBash);
         });
         
-        // Log a message that we succeeded in opening a bash window
+        // Log a message that we think we succeeded in opening a bash window
         console.log('Bash started @ "' + rootPath + '"');
     } catch( e ) {
-        vscode.window.showErrorMessage(message);
+        const errorMessage = 'Sorry, something went wrong with start-git-bash.  '; 
+        console.error(errorMessage + e);
+        vscode.window.showErrorMessage(errorMessage + '  See the VSCode log for details.');
     }//catch
 }
 
