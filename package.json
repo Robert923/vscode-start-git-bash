@@ -2,7 +2,7 @@
     "name": "start-git-bash",
     "displayName": "Start git-bash",
     "description": "Adds a bash command to VSCode that allows you to start git-bash in the current workspace's root folder.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "McCarter",
     "repository": {
         "type" : "git",
