@@ -14,6 +14,9 @@ Press F1 and then type "bash" to start git-bash.exe.
 
 **Enjoy!**
 
-##Version 1.0.4
+##Version 1.1.0
+* Now opens git-bash.exe in your currently active file path
+  * equivalent to GitHub Desktop: _Open in Git Shell_
+  * equivalent to Git for Windows: _Git Bash Here_
 * Improved error checking when git-bash isn't on the path
 * No longer opens an informational message when it opens git-bash (that you then have to close each time, which is annoying).

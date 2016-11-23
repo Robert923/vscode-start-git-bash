@@ -1,9 +1,10 @@
 'use strict';
 import * as vscode from 'vscode';
+import path = require('path');
 var spawn = require('child_process').spawn;
 
 /**
- * Start bash in the current VSCode workspace root folder
+ * Start bash in the current VSCode workspace file's folder
  */ 
 function startBash() {
     try {
@@ -17,17 +18,17 @@ function startBash() {
         const workspace = vscode.workspace;
         if( !workspace ) return;     // If there's no open work space there's nothing we can do
 
-        // Launch bash in the root path of the workspace 
+        // Launch bash in the file path of the workspace 
         // http://stackoverflow.com/questions/36587904/how-to-start-bash-in-a-directory-in-windows-bat
         // git-bash.exe" --cd=D:\mozdev
-        const rootPath = workspace.rootPath;
-        if( !rootPath || rootPath.length==0 ) {
+        const filePath: string = path.dirname(vscode.window.activeTextEditor.document.uri.fsPath);
+        if( !filePath || filePath.length==0 ) {
             vscode.window.showWarningMessage('No folder is open in VSCode, so unsure where to start git-bash.');
             return;     // If there's no open work space there's nothing we can do
         }
         
         // Try and spawn a git-bash.exe process
-        const pathArg = "--cd=" + rootPath;
+        const pathArg = "--cd=" + filePath;
         const gitProcess = spawn('git-bash.exe',[pathArg]);
         gitProcess.on('error', function(error) {
             const missingGitBash = 'Failed to start bash - is git-bash.exe on the system path?';
@@ -36,7 +37,7 @@ function startBash() {
         });
         
         // Log a message that we think we succeeded in opening a bash window
-        console.log('Bash started @ "' + rootPath + '"');
+        console.log('Bash started @ "' + filePath + '"');
     } catch( e ) {
         const errorMessage = 'Sorry, something went wrong with start-git-bash.  '; 
         console.error(errorMessage + e);
