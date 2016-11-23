@@ -1,7 +1,7 @@
 # README
 
 This has now largely been superceeded by built-in VSCode functionality in
-[release 1.1.0 (April 2016)](https://code.visualstudio.com/updates#_setup)
+[release 1.1.0 (April 2016)](https://code.visualstudio.com/updates/vApril)
 
 ----
 
