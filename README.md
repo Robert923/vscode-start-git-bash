@@ -5,7 +5,7 @@ This has now largely been superceeded by built-in VSCode functionality in
 
 ----
 
-This small Visual Studio Code extension adds a "bash" command to VSCode that allows you to start git-bash with the current working folder 
+This small Visual Studio Code extension adds a "bash" command to VSCode that allows you to start git-bash with the current working folder
 as the VSCode workspace's root folder.
 
 Press F1 and then type "bash" to start git-bash.exe.
@@ -14,6 +14,11 @@ Press F1 and then type "bash" to start git-bash.exe.
 
 **Enjoy!**
 
-##Version 1.0.4
+## Version 1.1.0
+* Updated so that if you have a file open it will open git-bash in the folder of the file,
+but if there's no folder it will still default to the workspace root folder.
+Thanks to [Leo](https://github.com/leotm) for the idea and pull request!  :-)
+
+## Version 1.0.4
 * Improved error checking when git-bash isn't on the path
 * No longer opens an informational message when it opens git-bash (that you then have to close each time, which is annoying).
