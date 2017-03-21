@@ -30,7 +30,7 @@ function spawnGitBash(activateOnPath:string) : boolean {
 /**
  * Start bash in the current VSCode workspace root folder
  */
-function startBash() {
+function startBash(forceWorkspace:boolean) {
     try {
         // If spawn wasn't successfully loaded there's nothing we can do
         if( !spawn ) {
@@ -40,7 +40,7 @@ function startBash() {
 
         // If there's a file open we'll try and it's directory - even without a workspace
         const activeEditor = vscode.window.activeTextEditor;
-        if( activeEditor!=null ) {
+        if( activeEditor!=null && forceWorkspace !== true ) {
             const filePath = path.dirname(activeEditor.document.fileName);
             spawnGitBash(filePath);
             return;
@@ -66,8 +66,11 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.startGitBash', startBash);
+    let disposable = vscode.commands.registerCommand('extension.startGitBash', () => startBash( false ) );
+    let workspaceDisposable = vscode.commands.registerCommand('extension.startWorkspaceGitBash', () => startBash( true ) );
+
     context.subscriptions.push(disposable);
+    context.subscriptions.push(workspaceDisposable);
 }
 
 // This method is called when the extension is deactivated

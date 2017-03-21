@@ -16,13 +16,18 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.startGitBash"
+        "onCommand:extension.startGitBash",
+        "onCommand:extension.startWorkspaceGitBash"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
             "command": "extension.startGitBash",
             "title": "bash"
+        },
+        {
+            "command": "extension.startWorkspaceGitBash",
+            "title": "bash in workspace"
         }]
     },
     "scripts": {
